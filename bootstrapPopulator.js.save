@@ -1,0 +1,42 @@
+x
+xx
+require('dotenv').config();
+const { Octokit } = require('@octokit/rest');
+
+const octokit = new Octokit({ auth: process.env.GH_TOKEN });
+
+async function bootstrap() {
+  try {
+    const user = await octokit.rest.users.getAuthenticated();
+    console.log(`Alden is logged in as: ${user.data.login}`);
+
+    const { data: project } = await octokit.rest.projects.createForOrg({
+      org: process.env.ORG,
+      name: process.env.PROJECT_NAME,
+      body: "Auto-created by Alden AI to manage all modules."
+    });
+
+    const projectId = project.id;
+clea3
+    console.log(`Created project: "${process.env.PROJECT_NAME}" (ID: ${projectId})`);
+
+    const columns = ['Backlog', 'To Do', 'In Progress', 'Review', 'Done'];
+    for (const name of columns) {
+      await octokit.rest.projects.createColumn({
+        project_id: projectId,
+        name
+      });
+      console.log(`Created column: ${name}`);
+    }
+
+    console.log("Project and columns created successfully!");
+  } catch (err) {
+    console.error("Alden hit an error:", err.message);
+    if (err.response) {
+      console.error("Details:", err.response.data.message || err.response.data);
+    }
+  }
+}
+
+
+

@@ -1,0 +1,15 @@
+{
+  "name": "project-populator-light",
+  "version": "1.0.0",
+  "description": "Auto-populates GitHub project boards with columns, tasks, and structure for TourForge.",
+  "main": "populateProjects.js",
+  "scripts": {
+    "start": "node populateProjects.js"
+  },
+  "dependencies": {
+    "@octokit/rest": "^20.0.0",
+    "dotenv": "^16.5.0"
+  },
+  "author": "TourForge - Executives",
+  "license": "MIT"
+}
